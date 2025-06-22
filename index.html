@@ -7,35 +7,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root{--succinct-pink:#ff00b8}
-    html,body{margin:0;padding:0;font-family:'Montserrat',sans-serif;background:#111;color:#fff;
-              display:flex;flex-direction:column;align-items:center;gap:2rem;min-height:100vh}
+    html,body{
+      margin:0;padding:0;
+      font-family:'Montserrat',sans-serif;
+      background:#111;color:#fff;
+      display:flex;flex-direction:column;align-items:center;
+      gap:2rem;min-height:100vh
+    }
     h1{margin-top:2rem;font-size:2rem}
 
     /* ---------- CARD PREVIEW ---------- */
-    #card{position:relative;width:960px;aspect-ratio:16/9;
-          background:url("card-template.png") center/contain no-repeat;overflow:hidden}
-    .field{position:absolute;font-weight:700;line-height:1;color:var(--succinct-pink);text-transform:capitalize;
-           pointer-events:none}
+    #card{
+      position:relative;
+      width:960px;            /* GitHub Pages için ideal genişlik */
+      height:540px;           /* Kart PSD oranına göre ayarlandı */
+      background:url("card-template.png") center/contain no-repeat;
+      overflow:hidden
+    }
+    .field{
+      position:absolute;
+      font-weight:700;
+      line-height:1.05;
+      color:var(--succinct-pink);
+      text-transform:capitalize;
+      pointer-events:none;
+      white-space:pre-wrap;
+      max-width:240px
+    }
 
-    /*  Coordinates tuned for 960‑wide preview; adjust if needed */
-    .name {top:230px; left:730px; font-size:32px}
-    .role {top:230px; left:1080px;font-size:32px}
-    .stage{top:365px; left:730px; font-size:32px}
-    .doj  {top:365px; left:1080px;font-size:32px}
-    .city {top:500px; left:730px; font-size:32px}
-    .x    {top:500px; left:1080px;font-size:32px}
+    /* ---------- VALUE COORDINATES ----------
+       Oranlar gerçek tasarım (
+       1200 × 782) üzerinden çıkarıldı,
+       960 × 540 ölçeğine uyarlandı.          */
+    .name {top:  80px; left:120px; font-size:28px}
+    .role {top:  80px; left:360px; font-size:28px}
+    .stage{top: 150px; left:120px; font-size:28px}
+    .doj  {top: 150px; left:360px; font-size:28px}
+    .city {top: 320px; left:120px; font-size:28px}
+    .x    {top: 320px; left:360px; font-size:28px}
 
     /* ---------- CONTROL PANEL ---------- */
-    .panel{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;background:#222;
-           padding:1.5rem 2rem;border-radius:12px;box-shadow:0 0 30px rgba(0,0,0,.3);
-           width:min(95%,960px)}
+    .panel{
+      display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+      background:#222;padding:1.5rem 2rem;border-radius:12px;
+      box-shadow:0 0 30px rgba(0,0,0,.3);
+      width:min(95%,960px)
+    }
     .panel label{display:flex;flex-direction:column;font-size:.9rem;gap:.3rem}
-    .panel input{padding:.4rem .6rem;border:1px solid #555;border-radius:6px;background:#333;color:#fff;
-                 font-size:1rem;min-width:200px}
-    button#download{padding:.6rem 1.2rem;font-size:1rem;font-weight:700;color:#fff;
-                    background:var(--succinct-pink);border:none;border-radius:6px;cursor:pointer;margin-left:auto}
+    .panel input{
+      padding:.4rem .6rem;
+      border:1px solid #555;border-radius:6px;
+      background:#333;color:#fff;font-size:1rem;min-width:200px
+    }
+    button#download{
+      padding:.6rem 1.2rem;font-size:1rem;font-weight:700;color:#fff;
+      background:var(--succinct-pink);border:none;border-radius:6px;
+      cursor:pointer;margin-left:auto
+    }
     button#download:hover{opacity:.85}
-    @media(max-width:1000px){#card{width:100%}}
+    @media(max-width:1000px){#card{width:100%;height:auto}}
   </style>
 </head>
 <body>
@@ -65,10 +95,12 @@
   <!-- html2canvas CDN -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-  <!-- ---------- Logic (module‑scoped) ---------- -->
+  <!-- ---------- Logic (module-scoped) ---------- -->
   <script type="module">
     /** inputId ⇢ spanId eşlemesi */
-    const fieldMap = { name:'f-name', role:'f-role', stage:'f-stage', doj:'f-doj', city:'f-city', x:'f-x' };
+    const fieldMap = {
+      name:'f-name', role:'f-role', stage:'f-stage', doj:'f-doj', city:'f-city', x:'f-x'
+    };
 
     for (const [inputId, spanId] of Object.entries(fieldMap)) {
       const input = document.getElementById(inputId);
@@ -81,7 +113,7 @@
     /* ---- DOWNLOAD PNG ---- */
     document.getElementById('download').addEventListener('click', async () => {
       const card   = document.getElementById('card');
-      const canvas = await html2canvas(card,{backgroundColor:null,useCORS:true,scale:2}); // 2× for sharper export
+      const canvas = await html2canvas(card,{backgroundColor:null,useCORS:true,scale:2});
       const link   = document.createElement('a');
       link.download = 'succinctlandia_id_card.png';
       link.href     = canvas.toDataURL('image/png');
