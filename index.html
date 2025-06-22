@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Succinctlandia ID Card Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google font similar to mock‑up -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --succinct-pink: #ff00b8;
+    }
+
+    html,body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background:#111;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:2rem;
+      min-height:100vh;
+    }
+
+    h1{margin-top:2rem;font-size:2rem}
+
+    /* ====================== CARD PREVIEW ====================== */
+    #card {
+      position: relative;
+      width: 960px;                 /* good quality, fits GitHub pages */
+      aspect-ratio: 16 / 9;         /* keeps proportions on resize */
+      background: url("card-template.png") center/contain no-repeat;
+      overflow: hidden;
+    }
+
+    .field {
+      position: absolute;
+      font-weight: 700;
+      line-height:1;
+      color: var(--succinct-pink);
+      text-transform: capitalize;
+      pointer-events:none;          /* ignore clicks while capturing */
+    }
+
+    /* Tuned roughly by eye against 2048×1152 template – adjust if needed */
+    .name  { top: 185px; left: 730px; font-size: 30px; }
+    .role  { top: 185px; left: 1080px; font-size: 30px; }
+    .stage { top: 300px; left: 730px; font-size: 30px; }
+    .doj   { top: 300px; left: 1080px; font-size: 30px; }
+    .x     { top: 435px; left: 1080px; font-size: 40px; }
+
+    /* ================ CONTROL PANEL ================ */
+    .panel {
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      justify-content:center;
+      background:#222;
+      padding:1.5rem 2rem;
+      border-radius:12px;
+      box-shadow:0 0 30px rgba(0,0,0,.3);
+      width: min(95%, 960px);
+    }
+    .panel label{display:flex;flex-direction:column;font-size:.9rem;gap:.3rem}
+    .panel input{
+      padding:.4rem .6rem;
+      border:1px solid #555;
+      border-radius:6px;
+      background:#333;
+      color:#fff;
+      font-size:1rem;
+      min-width:200px;
+    }
+    button#download {
+      padding:.6rem 1.2rem;
+      font-size:1rem;
+      font-weight:700;
+      color:#fff;
+      background:var(--succinct-pink);
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      margin-left:auto;
+    }
+    button#download:hover{opacity:.85}
+    @media(max-width:1000px){#card{width:100%}}
+  </style>
+</head>
+<body>
+  <h1>Succinctlandia ID Card Builder</h1>
+
+  <!-- ================= Preview Card ================= -->
+  <div id="card">
+    <!-- dynamic fields filled by JS -->
+    <span class="field name"  id="f-name">Your&nbsp;Name</span>
+    <span class="field role"  id="f-role">Your&nbsp;Role</span>
+    <span class="field stage" id="f-stage">Stage</span>
+    <span class="field doj"   id="f-doj">YYYY‑MM‑DD</span>
+    <span class="field x"     id="f-x">X Value</span>
+  </div>
+
+  <!-- ================= Input Panel ================= -->
+  <form class="panel" id="controls" onsubmit="event.preventDefault()">
+    <label>Name
+      <input type="text" id="name" placeholder="e.g. Alice" maxlength="30" />
+    </label>
+    <label>Role
+      <input type="text" id="role" placeholder="e.g. Builder" maxlength="30" />
+    </label>
+    <label>Stage
+      <input type="text" id="stage" placeholder="e.g. Beta" maxlength="30" />
+    </label>
+    <label>Date of Join
+      <input type="date" id="doj" />
+    </label>
+    <label>X
+      <input type="text" id="x" placeholder="e.g. Proofer" maxlength="30" />
+    </label>
+    <button id="download">Download PNG</button>
+  </form>
+
+  <!-- html2canvas from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    // map input -> span id
+    const map = {
+      name:  'f-name',
+      role:  'f-role',
+      stage: 'f-stage',
+      doj:   'f-doj',
+      x:     'f-x'
+    };
+
+    Object.keys(map).forEach(key => {
+      const input = document.getElementById(key);
+      const span  = document.getElementById(map[key]);
+      input.addEventListener('input', () => {
+        if(key === 'doj'){
+          span.textContent = input.value || 'YYYY‑MM‑DD';
+        } else {
+          span.textContent = input.value || span.dataset.default || span.textContent;
+        }
+      });
+    });
+
+    // ======== DOWNLOAD ========
+    document.getElementById('download').addEventListener('click', async () => {
+      const card = document.getElementById('card');
+      // temporarily hide panel focus rings, etc.
+      card.classList.add('capture');
+      const canvas = await html2canvas(card, {backgroundColor: null, useCORS: true});
+      card.classList.remove('capture');
+      const link = document.createElement('a');
+      link.download = 'succinctlandia_id_card.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+
+</body>
+</html>
