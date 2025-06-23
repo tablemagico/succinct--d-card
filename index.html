@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="en">
 
@@ -74,43 +75,13 @@
       border-radius: 4px;
     }
 
-
     /* Field coordinates (base 960×540) */
-    .name {
-      top: 190px;
-      left: 401px;
-      font-size: 20px
-    }
-
-    .role {
-      top: 190px;
-      left: 538px;
-      font-size: 20px
-    }
-
-    .stage {
-      top: 245px;
-      left: 401px;
-      font-size: 20px
-    }
-
-    .doj {
-      top: 247px;
-      left: 538px;
-      font-size: 20px
-    }
-
-    .team {
-      top: 307px;
-      left: 401px;
-      font-size: 20px
-    }
-
-    .x {
-      top: 307px;
-      left: 538px;
-      font-size: 20px
-    }
+    .name { top: 190px; left: 401px; font-size: 20px }
+    .role { top: 190px; left: 538px; font-size: 20px }
+    .stage { top: 245px; left: 401px; font-size: 20px }
+    .doj { top: 247px; left: 538px; font-size: 20px }
+    .team { top: 307px; left: 401px; font-size: 20px }
+    .x    { top: 307px; left: 538px; font-size: 20px }
 
     /* ---------- CONTROL PANEL ---------- */
     .panel {
@@ -157,9 +128,7 @@
       margin-left: auto
     }
 
-    button#download:hover {
-      opacity: .85
-    }
+    button#download:hover { opacity: .85 }
 
     /* Avatar picker */
     .avatar-picker {
@@ -169,66 +138,41 @@
       margin-top: .1rem;
       flex-wrap: wrap
     }
-
     .avatar-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 4px;
-      cursor: pointer;
-      object-fit: cover;
-      border: 2px solid transparent
+      width: 48px; height: 48px; border-radius: 4px; cursor: pointer;
+      object-fit: cover; border: 2px solid transparent
     }
+    .avatar-thumb:hover { border-color: var(--succinct-pink) }
 
-    .avatar-thumb:hover {
-      border-color: var(--succinct-pink)
-    }
-
-    .upload-inline {
-      display: flex;
-      flex-direction: column;
-      font-size: .9rem
-    }
+    .upload-inline { display: flex; flex-direction: column; font-size: .9rem }
 
     /* Credits */
     .credits {
-      color: #fff;
-      font-size: .75rem;
-      line-height: 1.1;
-      display: flex;
-      flex-direction: column;
-      margin-right: auto
+      color: #fff; font-size: .75rem; line-height: 1.1;
+      display: flex; flex-direction: column; margin-right: auto
     }
-
-    .credits a {
-      color: #1e90ff;
-      text-decoration: underline
-    }
+    .credits a { color: #1e90ff; text-decoration: underline }
 
     /* ---------- MOBILE ---------- */
     @media(max-width:600px) {
-      h1 {
-        font-size: 1.4rem
-      }
+      h1 { font-size: 1.4rem }
+      .panel { flex-direction: column; gap: .3rem; padding: .6rem .8rem }
+      .panel label { width: 100% }
+      .panel input, .panel select { width: 100% }
+      button#download { align-self: center; margin-left: 0 }
+    }
 
-      .panel {
-        flex-direction: column;
-        gap: .3rem;
-        padding: .6rem .8rem
-      }
-
-      .panel label {
-        width: 100%
-      }
-
-      .panel input,
-      .panel select {
-        width: 100%
-      }
-
-      button#download {
-        align-self: center;
-        margin-left: 0
-      }
+    /* ---------- WATERMARK ---------- */
+    .watermark {
+      position: fixed;
+      bottom: 8px;
+      right: 12px;
+      font-size: .9rem;
+      color: #fff;
+      opacity: .25;        /* yarı silik görünüm */
+      pointer-events: none;
+      user-select: none;
+      z-index: 9999;
     }
   </style>
 </head>
@@ -285,6 +229,9 @@
     <button id="download">Download PNG</button>
   </form>
 
+  <!-- WATERMARK -->
+  <div class="watermark">For Entertainment Purposes Only</div>
+
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script type="module">
@@ -332,3 +279,4 @@
 </body>
 
 </html>
+```
